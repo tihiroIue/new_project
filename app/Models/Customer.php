@@ -9,7 +9,7 @@ class Customer extends Model
 {
     use HasFactory;
 
-    public function posts(){
-        return $this->hasMany(Posts::class);
+    public function contents(){
+        return $this->hasMany(Content::class);
     }
 }

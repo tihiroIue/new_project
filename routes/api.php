@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\CustomerController;
+use App\Http\Controllers\API\ContentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +21,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'v1', 'namespace' => 'APP\Http\Controllers\API'], function(){
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\API'], function(){
     Route::apiResource('customers', CustomerController::class);
+});
+
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\API'], function(){
+    Route::apiResource('contents', ContentController::class);
 });
