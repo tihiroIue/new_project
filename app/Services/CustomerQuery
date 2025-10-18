@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Services\V1;
+
+use Illuminate\Http\Request;
+
+class CustomerQuery {
+    protected $safeParms = [
+        'name' => ['eq'],
+    ];
+
+    protected $columnMap = [
+
+    ];
+
+    protected $operatorMap = [
+        'eq' => '=',
+    ];
+
+    public function transform(Request $request){
+        $eloQuery = [];
+
+        return $eloQuery;
+    }
+}
