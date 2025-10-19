@@ -1,5 +1,25 @@
 
 services:
+
+    #php service
+    php:
+        build:
+            context: ./
+            target: php
+            args:
+                - APP_ENV=${APP_ENV}
+        environment:
+            - APP_ENV=${APP_ENV}
+            - CONTAINER_ROLE=app
+        working_dir: /var/www
+        volumes:
+            - ./ :/var/www
+        ports:
+            - 8000:8000
+        depends_on:
+            - database
+            - redis
+
     #database
     database:
         image: mysql:8.0
@@ -13,6 +33,19 @@ services:
         volumes:
             - db-data:/var/lib/mysql
 
+    #redis server
+    redis:
+        image: redis:alpine
+        command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+        ports:
+            - 6379:6379
+
+    nginx:
+        image: nginx:alpine
+        ports:
+        - "8080:80"
+        volumes:
+        - ./site:/usr/share/nginx/html:ro
 volumes:
     db-data: ~
 

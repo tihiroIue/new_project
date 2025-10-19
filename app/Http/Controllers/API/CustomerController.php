@@ -9,6 +9,10 @@ use App\Http\Requests\StorecustomerRequest;
 use App\Http\Requests\UpdatecustomerRequest;
 use App\Http\Resources\V1\CustormerResource;
 use App\Http\Resources\V1\CustomerCollection;
+use App\Services\CustomerQuery;
+use Illuminate\Http\Request;
+use App\Http\Resources\V1\CustomerResource;
+
 
 class CustomerController extends Controller
 {
@@ -17,9 +21,19 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new CustomerCollection(Customer::paginate());
+        $filter = new CustomerQuery();
+        $queryItems = $filter->transform($request);
+
+        $includedContent = $request->query('includedContent');
+        $customer = Customer::where($queryItems);
+
+        if($includedContent){
+            $customer = $customer->with('contents');
+        }
+
+        return new CustomerCollection($customer->paginate()->appends($request->query()));
     }
 
     /**
@@ -40,7 +54,7 @@ class CustomerController extends Controller
      */
     public function store(StorecustomerRequest $request)
     {
-        //
+        return new CustormerResource(Customer::create($request->all()));
     }
 
     /**

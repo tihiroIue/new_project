@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Content;
 use Illuminate\Http\Request;
+use App\Services\ContentQuery;
 
 use App\Http\Resources\V1\ContentResource;
 use App\Http\Resources\V1\ContentCollection;
@@ -16,9 +17,16 @@ class ContentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new ContentCollection(Content::paginate());
+        $filter = new ContentQuery();
+        $queryItems = $filter->transform($request);
+
+        if(count($queryItems) == 0){
+            return new ContentCollection(Content::paginate());
+        } else {
+            return new ContentCollection(Content::where($queryItems)->paginate());
+        }
     }
 
     /**

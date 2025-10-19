@@ -17,7 +17,8 @@ class CustormerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email
+            'email' => $this->email,
+            'contents' => ContentCollection::collection($this->whenLoaded('contents')),
         ];
     }
 }
