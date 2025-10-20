@@ -12,7 +12,7 @@ WORKDIR /var/www
 COPY . .
 COPY --from=composer:2.8.12 /usr/bin/composer /usr/bin/composer
 
-RUN chmod +x entrypoint.sh
+RUN chmod +x /var/www/entrypoint.sh
 
 ENV PORT=8000
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT [ "/var/www/entrypoint.sh" ]
